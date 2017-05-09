@@ -1,20 +1,28 @@
+
 class Obstacle {
-    constructor(context, x, y, width, height, speedX = 1, color = 'green') {
+    /*
+     * @param {String} type: {'up': 上面的障碍物, 'down': 下面的障碍物}
+     */
+    constructor(context, x, y, width, height, speedX = 1, type = 'up') {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
         this.context = context;
         this.speedX = speedX;
-        this.color = color;
+        this.type = type;
+        this.image = document.querySelector('#pipe');
     }
 
     updatePosition() {
         this.x = this.x - this.speedX;
         let context = this.context;
         context.save();
-        context.fillStyle = this.color;
-        context.fillRect(this.x, this.y, this.width, this.height);
+        if (this.type === 'up') {
+            context.drawImage(this.image, 157, 819 - this.height, 133, this.height, this.x, this.y, this.width, this.height);
+        } else {
+            context.drawImage(this.image, 9, 0, 133, this.height, this.x, this.y, this.width, this.height);
+        }
         context.restore();
     }
 }
@@ -79,6 +87,7 @@ class Game {
     constructor({bgImage}) {
         this.refresh = this.refresh.bind(this);
         this.fly = this.fly.bind(this);
+        this.start = this.start.bind(this);
 
         this.canvas = document.createElement('canvas');
         this.width = this.canvas.width = 400;
@@ -88,16 +97,17 @@ class Game {
         this.obstHeightDelta = this.height * 0.5;
         this.gapMinHeight = this.height * 0.2;
         this.gapHeightDelta = this.height * 0.1;
-
         this.bgImage = bgImage;
-        this.obstacles = [];
         this.obstTimeInterval = 4000;
+        document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+        // this.init();
+    }
+
+    init() {
         this.lastObstTime = Date.now() - this.obstTimeInterval;
+        this.obstacles = [];
         this.bird = new Bird(this.context, 10, (this.height - 10) / 2, 44, 30);
         this.crashed = false;
-
-        document.body.insertBefore(this.canvas, document.body.childNodes[0]);
-
         this.listenFly();
     }
 
@@ -107,8 +117,8 @@ class Game {
             gapHeight = this.gapMinHeight + Math.random() * this.gapHeightDelta,
             obstBottomY = obstTopHeight + gapHeight,
             obstBottomHeight = this.height - obstBottomY;
-        this.obstacles.push(new Obstacle(this.context, this.width, 0, 50, obstTopHeight));
-        this.obstacles.push(new Obstacle(this.context, this.width, obstBottomY, 50, obstBottomHeight));
+        this.obstacles.push(new Obstacle(this.context, this.width, 0, 90, obstTopHeight, 1.3, 'up'));
+        this.obstacles.push(new Obstacle(this.context, this.width, obstBottomY, 90, obstBottomHeight, 1.3, 'down'));
     }
 
     clear() {
@@ -184,6 +194,12 @@ class Game {
     }
 
     start() {
+        this.lastObstTime = Date.now() - this.obstTimeInterval;
+        this.obstacles = [];
+        this.bird = new Bird(this.context, 10, (this.height - 10) / 2, 44, 30);
+        this.crashed = false;
+        this.ignoreRestart();
+        this.listenFly();
         this.refresh();
         console.log('start');
     }
@@ -191,6 +207,7 @@ class Game {
     stop() {
         window.cancelAnimationFrame(this.nextFrame);
         this.ignoreFly();
+        this.listenRestart();
         console.log('stop');
     }
 
@@ -204,6 +221,14 @@ class Game {
 
     ignoreFly() {
         this.canvas.removeEventListener('click', this.fly, false);
+    }
+
+    listenRestart() {
+        this.canvas.addEventListener('click', this.start, false);
+    }
+
+    ignoreRestart() {
+        this.canvas.removeEventListener('click', this.start, false);
     }
 }
 
