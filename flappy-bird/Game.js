@@ -15,15 +15,6 @@ class Game {
         this.bgImage = bgImage;
         this.obstTimeInterval = 4000;
         document.body.insertBefore(this.canvas, document.body.childNodes[0]);
-        // this.init();
-    }
-
-    init() {
-        this.lastObstTime = Date.now() - this.obstTimeInterval;
-        this.obstacles = [];
-        this.bird = new Bird(this.context, 10, (this.height - 10) / 2, 44, 30);
-        this.crashed = false;
-        this.listenFly();
     }
 
     addTwoObstacles() {
@@ -111,7 +102,7 @@ class Game {
     start() {
         this.lastObstTime = Date.now() - this.obstTimeInterval;
         this.obstacles = [];
-        this.bird = new Bird(this.context, 10, (this.height - 10) / 2, 44, 30);
+        this.bird = new Bird(this.context, 66, (this.height - 10) / 2);
         this.crashed = false;
         this.ignoreRestart();
         this.listenFly();

@@ -1,10 +1,12 @@
 class Bird {
-    constructor(context, x, y, width, height, flyV = -6, a = 0.3) {
+    constructor(context, x, y, width = 44, height = 30, flyV = -6, a = 0.3) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
         this.fly = this.fly.bind(this);
+
+        console.log(x, y);
 
         this.context = context;
         this.image = document.querySelector('#bird');
@@ -34,9 +36,10 @@ class Bird {
         let context = this.context;
         context.save();
         context.translate(this.x, this.y);
+        // console.log(`bird: (${this.x}, ${this.y})`);   // debug
         // context.fillStyle = 'grey';      // debug
         // context.fillRect(0, -this.height / 2, this.width, this.height);   // debug
-        context.drawImage(this.image, 0, this.sy * 60, 88, 60, 0, -this.height / 2, this.width, this.height);
+        context.drawImage(this.image, 0, this.sy * 60, 88, 60, -this.width / 2, -this.height / 2, this.width, this.height);
         context.restore();
     }
 
@@ -46,7 +49,7 @@ class Bird {
     }
 
     ifCrashWith(obstacle) {
-        if ((this.x > obstacle.x + obstacle.width) || (this.x + this.width < obstacle.x) || (this.y - this.height / 2 > obstacle.y + obstacle.height) || (this.y + this.height / 2 < obstacle.y)){
+        if ((this.x - this.width / 2 > obstacle.x + obstacle.width) || (this.x + this.width / 2 < obstacle.x) || (this.y - this.height / 2 > obstacle.y + obstacle.height) || (this.y + this.height / 2 < obstacle.y)){
             return false;
         }
         console.log(this);  // debug
