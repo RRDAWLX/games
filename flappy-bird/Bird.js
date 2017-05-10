@@ -1,19 +1,17 @@
 class Bird {
-    constructor(context, x, y, width = 44, height = 30, flyV = -6, a = 0.3) {
-        this.x = x;
-        this.y = y;
+    constructor(context, width = 44, height = 30, v = 0, flyV = -8, a = 0.3) {
+        this.x = 1.5 * width;
+        this.y = context.canvas.height / 2;
         this.width = width;
         this.height = height;
         this.fly = this.fly.bind(this);
-
-        console.log(x, y);
 
         this.context = context;
         this.image = document.querySelector('#bird');
         this.yCeil = this.context.canvas.height - this.height / 2;
         this.yFloor = this.height / 2;
         // this.flyHeight = 30;
-        this.v = -1;     // 起始上升速度
+        this.v = v;     // 起始上升速度
         this.flyV = flyV;   // 每次点击后上升速度
         this.a = a;
         // this.flyVelocity = -Math.sqrt(2 * this.a * this.flyHeight);

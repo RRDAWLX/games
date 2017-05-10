@@ -2,7 +2,7 @@ class Obstacle {
     /*
      * @param {String} type: {'up': 上面的障碍物, 'down': 下面的障碍物}
      */
-    constructor(context, x, y, width, height, speedX = 1, type = 'up') {
+    constructor(context, type = 'up', x, y, width, height, speedX = 1) {
         this.x = x;
         this.y = y;
         this.width = width;

@@ -23,8 +23,8 @@ class Game {
             gapHeight = this.gapMinHeight + Math.random() * this.gapHeightDelta,
             obstBottomY = obstTopHeight + gapHeight,
             obstBottomHeight = this.height - obstBottomY;
-        this.obstacles.push(new Obstacle(this.context, this.width, 0, 90, obstTopHeight, 1.3, 'up'));
-        this.obstacles.push(new Obstacle(this.context, this.width, obstBottomY, 90, obstBottomHeight, 1.3, 'down'));
+        this.obstacles.push(new Obstacle(this.context, 'up', this.width, 0, 90, obstTopHeight, 1.3));
+        this.obstacles.push(new Obstacle(this.context, 'down', this.width, obstBottomY, 90, obstBottomHeight, 1.3));
     }
 
     clear() {
@@ -100,7 +100,7 @@ class Game {
     start() {
         this.lastObstTime = Date.now() - this.obstTimeInterval;
         this.obstacles = [];
-        this.bird = new Bird(this.context, 66, (this.height - 10) / 2);
+        this.bird = new Bird(this.context);
         this.crashed = false;
         this.ignoreRestart();
         this.listenFly();
