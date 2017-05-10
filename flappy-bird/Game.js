@@ -94,8 +94,6 @@ class Game {
         this.frame();
         if (this.checkCrash()) {
             this.stop();
-        } else {
-            this.nextFrame = window.requestAnimationFrame(this.refresh);
         }
     }
 
@@ -106,12 +104,12 @@ class Game {
         this.crashed = false;
         this.ignoreRestart();
         this.listenFly();
-        this.refresh();
+        this.nextFrame = window.setInterval(this.refresh, 20);
         console.log('start');
     }
 
     stop() {
-        window.cancelAnimationFrame(this.nextFrame);
+        window.clearInterval(this.nextFrame);
         this.ignoreFly();
         this.listenRestart();
         console.log('stop');

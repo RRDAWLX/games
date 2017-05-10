@@ -45,7 +45,7 @@ class Bird {
 
     fly() {
         this.v = this.flyV;
-        console.log(this.v);    // debug
+        // console.log(`bird velocity: ${this.v}`);    // debug
     }
 
     ifCrashWith(obstacle) {
