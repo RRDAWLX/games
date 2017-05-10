@@ -28,7 +28,7 @@ class Obstacle {
 }
 
 class Bird {
-    constructor(context, x, y, width, height, flyV = -10, a = 0.3) {
+    constructor(context, x, y, width, height, flyV = -7, a = 0.3) {
         this.x = x;
         this.y = y;
         this.width = width;
@@ -40,8 +40,8 @@ class Bird {
         this.yCeil = this.context.canvas.height - this.height / 2;
         this.yFloor = this.height / 2;
         // this.flyHeight = 30;
-        this.v = 0;
-        this.flyV = flyV;
+        this.v = -1;     // 起始上升速度
+        this.flyV = flyV;   // 每次点击后上升速度
         this.a = a;
         // this.flyVelocity = -Math.sqrt(2 * this.a * this.flyHeight);
         this.frameCounter = -1;
@@ -70,7 +70,7 @@ class Bird {
     }
 
     fly() {
-        this.v = -7;
+        this.v = this.flyV;
     }
 
     ifCrashWith(obstacle) {
@@ -90,8 +90,8 @@ class Game {
         this.start = this.start.bind(this);
 
         this.canvas = document.createElement('canvas');
-        this.width = this.canvas.width = 400;
-        this.height = this.canvas.height = 650;
+        this.width = this.canvas.width = window.innerWidth;
+        this.height = this.canvas.height = window.innerHeight;
         this.context = this.canvas.getContext('2d');
         this.obstMinHeight = this.height * 0.2;
         this.obstHeightDelta = this.height * 0.5;
