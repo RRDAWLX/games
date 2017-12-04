@@ -72,14 +72,17 @@ class Bird {
   }
 
   /**
-   * @desc 撞到障碍物后坠落
+   * @desc 启用发生撞击后的配置
    */
-  crash() {
-
+  crashConfig() {
+    this.sy = 60;
+    this.v = this.flyV * 2;
+    this.a = this.a * 3;
   }
 
   /**
    * @desc 判断是否与指定的障碍物发生了撞击
+   * @param {object} obstacle 障碍物对象
    * @return {boolean} {true: 发生了撞击，false: 未发生撞击}
    */
   ifCrashInto(obstacle) {

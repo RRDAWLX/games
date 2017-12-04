@@ -24,13 +24,30 @@ class Game {
     this.crashed = false; // 当前是否发生碰撞的标识字段
     this.ignoreRestart();
     this.listenFly();
-    this.nextFrame = window.setInterval(this.refresh, 20);
+    this.refresh();
   }
 
-  stop() {
-    window.clearInterval(this.nextFrame);
+  crash() {
     this.ignoreFly();
-    this.listenRestart();
+    new Promise(resolve => {
+      let anim = () => {
+        this.clear();
+        this.drawBackground();
+        this.obstacles.forEach(obst => {
+          obst.draw();
+        });
+        this.bird.updatePosition().draw();
+        if (this.bird.ifCrashIntoGround()) {
+          resolve();
+        } else {
+          window.requestAnimationFrame(anim);
+        }
+      };
+      this.bird.crashConfig();
+      anim();
+    }).then(() => {
+      this.listenRestart();
+    });
   }
 
   /**
@@ -40,7 +57,9 @@ class Game {
     this.clear();
     this.frame();
     if (this.checkCrash()) {
-      this.stop();
+      this.crash();
+    } else {
+      window.requestAnimationFrame(this.refresh);
     }
   }
 
@@ -73,7 +92,7 @@ class Game {
 
     // 更新留存障碍物的位置
     this.obstacles.forEach(obst => {
-      obst.updatePosition();
+      obst.updatePosition().draw();
     });
 
     // 更新鸟的位置

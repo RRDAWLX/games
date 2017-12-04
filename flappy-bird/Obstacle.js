@@ -29,6 +29,10 @@ class Obstacle {
       this.startTime = Date.now();
     }
     this.x = this.startX - this.speedX * (Date.now() - this.startTime) / 1000;
+    return this;
+  }
+
+  draw() {
     let context = this.context;
     context.save();
     if (this.type === 'up') {
