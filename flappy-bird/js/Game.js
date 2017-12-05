@@ -11,12 +11,16 @@ class Game {
     this.obstTimeInterval = 4000; // 障碍物生成时间间隔
     this.images = {
       bg: document.querySelector('#bg'),
-      ready: document.querySelector('#ready')
+      ready: document.querySelector('#ready'),
+      over: document.querySelector('#over')
     };
     document.body.insertBefore(this.canvas, document.body.childNodes[0]);
     this.ground = new Ground(this.context);
   }
 
+  /**
+   * @desc 准备
+   */
   getReady() {
     this.bird = new Bird({context: this.context});
     this.obstacles = [];
@@ -40,6 +44,9 @@ class Game {
     frame();
   }
 
+  /**
+   * @desc 开始
+   */
   play() {
     this.lastObstTime = Date.now() - this.obstTimeInterval; // 上次生成障碍物的时间，每次游戏开始时设置此值为一个障碍物生成时间间隔前。
 
@@ -63,6 +70,9 @@ class Game {
     frame();
   }
 
+  /**
+   * @desc 坠落
+   */
   crash() {
     this.bird.crashConfig();
 
@@ -79,12 +89,22 @@ class Game {
     frame();
   }
 
+  /**
+   * @desc 结果
+   */
   getResult() {
     let flag = true,
-      cb = () => {
-      this.canvas.removeEventListener('click', cb, false);
-      flag = false;
-    };
+      canvas = this.canvas,
+      cb = (e) => {
+        // 坐标转换
+        let x = e.offsetX / canvas.clientWidth * 720,
+          y = e.offsetY / canvas.clientHeight * 1280;
+
+        if (x > 228 && x < 492 && y > 600 && y < 750) { // button坐标及尺寸：228, 600, 264, 150
+          canvas.removeEventListener('click', cb, false);
+          flag = false;
+        }
+      };
 
     window.addEventListener('click', cb, false);
 
@@ -100,15 +120,21 @@ class Game {
     frame();
   }
 
+  /**
+   * @desc 准备游戏动画帧
+   */
   readyFrame() {
     this.clear();
     this.drawBackground();
     this.bird.flap().draw();
     this.ground.draw();
-    this.context.drawImage(this.images.ready, 10, 15, 470, 135, 125, 400, 470, 135);
-    this.context.drawImage(this.images.ready, 0, 150, 286, 255, 217, 600, 286, 255);
+    this.context.drawImage(this.images.ready, 10, 15, 470, 135, 125, 400, 470, 135);  // get ready
+    this.context.drawImage(this.images.ready, 0, 150, 286, 255, 217, 600, 286, 255);  // tap
   }
 
+  /**
+   * @desc 游戏进行中动画帧
+   */
   playFrame() {
     this.clear();
     this.drawBackground();
@@ -137,6 +163,9 @@ class Game {
     this.ground.draw();
   }
 
+  /**
+   * @desc 坠落动画帧
+   */
   crashFrame() {
     this.clear();
     this.drawBackground();
@@ -147,6 +176,9 @@ class Game {
     this.ground.draw();
   }
 
+  /**
+   * @desc 结果展示动画帧
+   */
   resultFrame() {
     this.clear();
     this.drawBackground();
@@ -155,6 +187,8 @@ class Game {
     });
     this.bird.draw();
     this.ground.draw();
+    this.context.drawImage(this.images.over, 15, 315, 484, 110, 118, 400, 484, 110);  // game over
+    this.context.drawImage(this.images.over, 604, 2, 264, 150, 228, 600, 264, 150); // button
   }
 
   /**
