@@ -15,6 +15,8 @@ class Game {
       over: document.querySelector('#over')
     };
     document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+    this.bird = new Bird({context: this.context});
+    this.obstacles = [];
     this.ground = new Ground(this.context);
   }
 
@@ -22,9 +24,9 @@ class Game {
    * @desc 准备
    */
   getReady() {
-    this.bird = new Bird({context: this.context});
-    this.obstacles = [];
-
+    this.bird.reset();
+    this.obstacles.length = 0;
+    
     let flag = true,
       cb = () => {
       this.canvas.removeEventListener('click', cb, false);
