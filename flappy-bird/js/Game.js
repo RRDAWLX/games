@@ -1,8 +1,5 @@
 class Game {
   constructor() {
-    this.refresh = this.refresh.bind(this);
-    this.play = this.play.bind(this);
-
     this.canvas = document.createElement('canvas');
     this.width = this.canvas.width = 720; // 画布宽度，单位 px。
     this.height = this.canvas.height = 1280; // 画布高度，单位 px。
@@ -11,8 +8,11 @@ class Game {
     this.obstMaxHeight = 700; // 下方障碍物最大高度，单位 px。
     this.gapMinHeight = 280; // 上下两个障碍物间的最小间隔，单位 px.
     this.gapMaxHeight = 380; // 上下两个障碍物间的最大间隔，单位 px。
-    this.bgImage = document.querySelector('#bg');
     this.obstTimeInterval = 4000; // 障碍物生成时间间隔
+    this.images = {
+      bg: document.querySelector('#bg'),
+      ready: document.querySelector('#ready')
+    };
     document.body.insertBefore(this.canvas, document.body.childNodes[0]);
     this.ground = new Ground(this.context);
   }
@@ -63,19 +63,6 @@ class Game {
     frame();
   }
 
-  /**
-   * @desc 刷新游戏画面，并检查是否发生碰撞。
-   */
-  refresh() {
-    this.playFrame();
-
-    if (this.checkCrash()) {
-      this.crash();
-    } else {
-      window.requestAnimationFrame(this.refresh);
-    }
-  }
-
   crash() {
     this.bird.crashConfig();
 
@@ -118,6 +105,8 @@ class Game {
     this.drawBackground();
     this.bird.flap().draw();
     this.ground.draw();
+    this.context.drawImage(this.images.ready, 10, 15, 470, 135, 125, 400, 470, 135);
+    this.context.drawImage(this.images.ready, 0, 150, 286, 255, 217, 600, 286, 255);
   }
 
   playFrame() {
@@ -181,7 +170,7 @@ class Game {
   drawBackground() {
     let context = this.context;
     context.save();
-    context.drawImage(this.bgImage, 0, 0, this.width, this.height);
+    context.drawImage(this.images.bg, 0, 0, this.width, this.height);
     context.restore();
   }
 
