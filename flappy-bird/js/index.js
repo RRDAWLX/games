@@ -1,1 +1,1 @@
-new Game().start();
+new Game().getReady();

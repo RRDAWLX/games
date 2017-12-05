@@ -25,7 +25,7 @@ class Bird {
     this.a = a;
 
     this.image = document.querySelector('#bird');
-    this.yCeil = this.context.canvas.height - this.height / 2; // bird中心点纵坐标上限
+    this.yCeil = 1280 - 280 - this.height / 2 ; // bird中心点纵坐标上限
     this.yFloor = this.height / 2; // bird中心点纵坐标下限
     this.sy = 0;  // 在源图片上截取图片起始点的纵坐标
     this.fly = this.fly.bind(this);
@@ -103,6 +103,6 @@ class Bird {
    * @return {boolean} {true: 坠落到了地面，false: 未坠落到地面}
    */
   ifCrashIntoGround() {
-    return this.y + this.height / 2 >= 1000 // 1280 - 280;
+    return this.y + this.height / 2 >= 1000; // 1280 - 280
   }
 }
