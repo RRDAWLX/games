@@ -1,20 +1,22 @@
 class Game {
-  constructor({bgImage}) {
+  constructor() {
     this.refresh = this.refresh.bind(this);
     this.fly = this.fly.bind(this);
     this.start = this.start.bind(this);
 
+    this.status = 0; // 游戏状态，{0：初始化中，1：准备开始游戏，2：游戏正常进行中，3：发生撞击后，4：鸟坠入地面后}
     this.canvas = document.createElement('canvas');
     this.width = this.canvas.width = 720; // 画布宽度，单位 px。
     this.height = this.canvas.height = 1280; // 画布高度，单位 px。
     this.context = this.canvas.getContext('2d');
-    this.obstMinHeight = 300; // 上方障碍物最小高度，单位 px
-    this.obstMaxHeight = 700; // 上方障碍物最大高度，单位px。
+    this.obstMinHeight = 380; // 下方障碍物最小高度，单位 px
+    this.obstMaxHeight = 700; // 下方障碍物最大高度，单位px。
     this.gapMinHeight = 280; // 上下两个障碍物间的最小间隔，单位 px.
     this.gapMaxHeight = 380; // 上下两个障碍物间的最大间隔，单位 px。
-    this.bgImage = bgImage; //
+    this.bgImage = document.querySelector('#bg');
     this.obstTimeInterval = 4000; // 障碍物生成时间间隔
     document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+    this.ground = new Ground(this.context);
   }
 
   start() {
@@ -37,6 +39,7 @@ class Game {
           obst.draw();
         });
         this.bird.updatePosition().draw();
+        this.ground.draw();
         if (this.bird.ifCrashIntoGround()) {
           resolve();
         } else {
@@ -97,6 +100,7 @@ class Game {
 
     // 更新鸟的位置
     this.bird.flap().updatePosition().draw();
+    this.ground.draw();
   }
 
   /**
@@ -137,10 +141,10 @@ class Game {
    */
   addTwoObstacles() {
     this.lastObstTime = Date.now();
-    let topObstHeight = this.obstMinHeight + Math.random() * (this.obstMaxHeight - this.obstMinHeight), // 上方障碍物高度
+    let bottomObstHeight = this.obstMinHeight + Math.random() * (this.obstMaxHeight - this.obstMinHeight), // 下方障碍物高度
       gapHeight = this.gapMinHeight + Math.random() * (this.gapMaxHeight - this.gapMinHeight), // 障碍物间隔高度
-      bottomObstY = topObstHeight + gapHeight, // 下方障碍物在画布中的 y 坐标
-      bottomObstHeight = this.height - bottomObstY; // 下方障碍物高度
+      topObstHeight = this.height - bottomObstHeight - gapHeight, // 上方障碍物高度
+      bottomObstY = this.height - bottomObstHeight; // 下方障碍物在画布中的 y 坐标
     // 生成上下两个障碍物，并放入障碍物数组统一管理。
     this.obstacles.push(new Obstacle({
       context: this.context,

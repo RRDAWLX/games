@@ -103,6 +103,6 @@ class Bird {
    * @return {boolean} {true: 坠落到了地面，false: 未坠落到地面}
    */
   ifCrashIntoGround() {
-    return this.y + this.height / 2 >= this.context.canvas.height;
+    return this.y + this.height / 2 >= 1000 // 1280 - 280;
   }
 }

@@ -1,3 +1,1 @@
-new Game({
-    bgImage: document.querySelector('#bg')
-}).start();
+new Game().start();
