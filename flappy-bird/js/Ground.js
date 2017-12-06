@@ -11,7 +11,7 @@ class Ground {
 
   draw() {
     let context = this.context,
-      sx = ((Date.now() - this.startTime) % 300) / 300 * 60;
+      sx = ((Date.now() - this.startTime) % 300) / 300 * 60;  // 图片每 300ms 左移 60px
     context.save();
     context.drawImage(this.image, sx, 0, 720, 280, 0, 1000, 720, 280);
     context.restore();
