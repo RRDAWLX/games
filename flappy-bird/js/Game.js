@@ -18,6 +18,11 @@ class Game {
     this.bird = new Bird({context: this.context});
     this.obstacles = [];
     this.ground = new Ground(this.context);
+    this.scoreboard = new Scoreboard({
+      context: this.context,
+      bird: this.bird,
+      obstacles: this.obstacles
+    });
   }
 
   /**
@@ -26,7 +31,8 @@ class Game {
   getReady() {
     this.bird.reset();
     this.obstacles.length = 0;
-    
+    this.scoreboard.reset();
+
     let flag = true,
       cb = () => {
       this.canvas.removeEventListener('click', cb, false);
@@ -160,9 +166,9 @@ class Game {
       obst.updatePosition().draw();
     });
 
-    // 更新鸟的位置
     this.bird.flap().updatePosition().draw();
     this.ground.draw();
+    this.scoreboard.count().draw();
   }
 
   /**
@@ -174,8 +180,9 @@ class Game {
     this.obstacles.forEach(obst => {
       obst.draw();
     });
-    this.bird.updatePosition().draw();
     this.ground.draw();
+    this.bird.updatePosition().draw();
+    this.scoreboard.draw();
   }
 
   /**
@@ -187,8 +194,9 @@ class Game {
     this.obstacles.forEach(obst => {
       obst.draw();
     });
-    this.bird.draw();
     this.ground.draw();
+    // this.bird.draw();
+    this.scoreboard.draw();
     this.context.drawImage(this.images.over, 15, 315, 484, 110, 118, 400, 484, 110);  // game over
     this.context.drawImage(this.images.over, 604, 2, 264, 150, 228, 600, 264, 150); // button
   }

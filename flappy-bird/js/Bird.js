@@ -23,17 +23,19 @@ class Bird {
     this.configA = a;
 
     this.image = document.querySelector('#bird');
-    this.yCeil = 1280 - 280 - this.height / 2 ; // bird中心点纵坐标上限
     this.yFloor = this.height / 2; // bird中心点纵坐标下限
     this.fly = this.fly.bind(this);
   }
 
   reset() {
+    let canvas = this.context.canvas;
+
     this.x = 1.5 * this.width;  // bird的中心点横坐标
-    this.y = this.context.canvas.height / 2;  // bird的中心点纵坐标
+    this.y = canvas.height / 2;  // bird的中心点纵坐标
     this.v = this.configV;
     this.flyV = this.configFlyV;
     this.a = this.configA;
+    this.yCeil = canvas.height - 280 - this.height / 2 ; // bird中心点纵坐标上限
     this.sy = 0;  // 在源图片上截取图片起始点的纵坐标
     this.startTime = Date.now();
   }
@@ -81,6 +83,7 @@ class Bird {
    * @desc 启用发生撞击后的配置
    */
   crashConfig() {
+    this.yCeil = 1280 + this.height / 2;
     this.sy = 60;
     this.v = this.flyV * 2;
     this.a = this.a * 3;
@@ -109,6 +112,6 @@ class Bird {
    * @return {boolean} {true: 坠落到了地面，false: 未坠落到地面}
    */
   ifCrashIntoGround() {
-    return this.y + this.height / 2 >= 1000; // 1280 - 280
+    return this.y >= this.yCeil;
   }
 }

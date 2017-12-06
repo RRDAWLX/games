@@ -1,4 +1,7 @@
 class Ground {
+  /**
+   * @param {object} context canvas 2d上下文
+   */
   constructor(context) {
     this.context = context;
     this.groundImage = document.querySelector('#ground');
