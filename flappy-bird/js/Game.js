@@ -136,7 +136,7 @@ class Game {
     this.drawBackground();
     this.bird.flap().draw();
     this.ground.draw();
-    this.context.drawImage(this.images.ready, 10, 15, 470, 135, 125, 400, 470, 135);  // get ready
+    this.context.drawImage(this.images.ready, 10, 15, 470, 135, 125, 300, 470, 135);  // get ready
     this.context.drawImage(this.images.ready, 0, 150, 286, 255, 217, 600, 286, 255);  // tap
   }
 
@@ -198,7 +198,7 @@ class Game {
     // this.bird.draw();
     this.scoreboard.draw();
     this.context.drawImage(this.images.over, 15, 315, 484, 110, 118, 400, 484, 110);  // game over
-    this.context.drawImage(this.images.over, 604, 2, 264, 150, 228, 600, 264, 150); // button
+    this.context.drawImage(this.images.over, 604, 2, 264, 150, 228, 700, 264, 150); // button
   }
 
   /**
