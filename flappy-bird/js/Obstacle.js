@@ -1,6 +1,7 @@
 class Obstacle {
   /**
    * @param {object} context canvas 2d上下文
+   * @param {object} image 障碍物的图片资源
    * @param {string} type 障碍物类型，{'up': 上面的障碍物, 'down': 下面的障碍物}，默认值为 ‘up’。
    * @param {number} x 障碍物左上角横坐标
    * @param {number} y 障碍物左上角纵坐标
@@ -9,15 +10,15 @@ class Obstacle {
    * @param {number} speedX 障碍物在 x 轴负方向上的速度，单位 px/s, 默认 100px/s。
    * @param {number} canvasWidth 画布宽度，单位 px，默认值 720 px。
    */
-  constructor({context, type = 'up', x, y, width, height, speedX = 100, canvasWidth = 720}) {
+  constructor({context, image, type = 'up', x, y, width, height, speedX = 100, canvasWidth = 720}) {
     this.context = context;
+    this.image = image;
     this.type = type;
     this.x = this.startX = x;
     this.y = y;
     this.width = width;
     this.height = height;
     this.speedX = speedX;
-    this.image = document.querySelector('#pipe');
     this.startTime = 0;
   }
 

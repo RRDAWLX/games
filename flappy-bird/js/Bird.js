@@ -1,6 +1,7 @@
 class Bird {
   /**
    * @param {object} context canvas 2d上下文
+   * @param {object} image 鸟的图片资源
    * @param {number} width 鸟的宽度
    * @param {number} height 鸟的高度
    * @param {number} v 起始上升速度，单位 px/s。默认值为 0 px/s。
@@ -9,6 +10,7 @@ class Bird {
    */
   constructor({
     context,
+    image,
     width = 85,
     height = 60,
     v = 0,
@@ -16,13 +18,13 @@ class Bird {
     a = 0.3
   }) {
     this.context = context;
+    this.image = image;
     this.width = width;
     this.height = height;
     this.configV = v;
     this.configFlyV = flyV;
     this.configA = a;
 
-    this.image = document.querySelector('#bird');
     this.yFloor = this.height / 2; // bird中心点纵坐标下限
     this.fly = this.fly.bind(this);
   }
@@ -96,8 +98,8 @@ class Bird {
    */
   ifCrashInto(obstacle) {
     if (
-      (this.x - this.width / 2 > obstacle.x + obstacle.width - 7) ||
-      (this.x + this.width / 2 < obstacle.x + 7) ||
+      (this.x - this.width / 2 > obstacle.x + obstacle.width) ||
+      (this.x + this.width / 2 < obstacle.x + 7) ||   // 管子末端比较宽，特殊处理
       (this.y - this.height / 2 > obstacle.y + obstacle.height) ||
       (this.y + this.height / 2 < obstacle.y)
     ) {

@@ -1,5 +1,8 @@
 class Game {
-  constructor() {
+  /**
+   * @param {object} images 游戏所使用的图片资源
+   */
+  constructor(images) {
     this.canvas = document.createElement('canvas');
     this.width = this.canvas.width = 720; // 画布宽度，单位 px。
     this.height = this.canvas.height = 1280; // 画布高度，单位 px。
@@ -9,17 +12,20 @@ class Game {
     this.gapMinHeight = 280; // 上下两个障碍物间的最小间隔，单位 px.
     this.gapMaxHeight = 380; // 上下两个障碍物间的最大间隔，单位 px。
     this.obstTimeInterval = 4000; // 障碍物生成时间间隔
-    this.images = {
-      bg: document.querySelector('#bg'),
-      ready: document.querySelector('#ready'),
-      over: document.querySelector('#over')
-    };
+    this.images = images;
     document.body.insertBefore(this.canvas, document.body.childNodes[0]);
-    this.bird = new Bird({context: this.context});
+    this.bird = new Bird({
+      context: this.context,
+      image: this.images.bird
+    });
     this.obstacles = [];
-    this.ground = new Ground(this.context);
+    this.ground = new Ground({
+      context: this.context,
+      image: this.images.ground
+    });
     this.scoreboard = new Scoreboard({
       context: this.context,
+      image: this.images.number,
       bird: this.bird,
       obstacles: this.obstacles
     });
@@ -108,7 +114,7 @@ class Game {
         let x = e.offsetX / canvas.clientWidth * 720,
           y = e.offsetY / canvas.clientHeight * 1280;
 
-        if (x > 228 && x < 492 && y > 600 && y < 750) { // button坐标及尺寸：228, 600, 264, 150
+        if (x > 228 && x < 492 && y > 700 && y < 850) { // button坐标及尺寸：228, 700, 264, 150
           canvas.removeEventListener('click', cb, false);
           flag = false;
         }
@@ -254,6 +260,7 @@ class Game {
     // 生成上下两个障碍物，并放入障碍物数组统一管理。
     this.obstacles.push(new Obstacle({
       context: this.context,
+      image: this.images.pipe,
       type: 'up',
       x: this.width,
       y: 0,
@@ -262,6 +269,7 @@ class Game {
     }));
     this.obstacles.push(new Obstacle({
       context: this.context,
+      image: this.images.pipe,
       type: 'down',
       x: this.width,
       y: bottomObstY,
