@@ -46,7 +46,14 @@ class Bird {
    * @desc 振翅
    */
   flap() {
-    this.sy = 60 * (Math.floor((Date.now() - this.startTime) / 100) % 3);
+    // 振翅：上→中→下→中→上→中→下→中
+    // 一个完整的振翅过程包含4帧
+    // 10f/s
+    let frame = Math.floor((Date.now() - this.startTime) / 100) % 4;
+    if (frame === 3) {
+      frame = 1;
+    }
+    this.sy = 60 * frame;
     return this;
   }
 
