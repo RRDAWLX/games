@@ -39,11 +39,11 @@ class Game {
     this.obstacles.length = 0;
     this.scoreboard.reset();
 
-    let flag = true,
+    let flag = true,  // 标识当前是否仍处于准备状态的开关
       cb = () => {
-      this.canvas.removeEventListener('click', cb, false);
-      flag = false;
-    };
+        this.canvas.removeEventListener('click', cb, false);
+        flag = false;
+      };
     this.canvas.addEventListener('click', cb, false);
 
     let frame = () => {
@@ -107,7 +107,7 @@ class Game {
    * @desc 结果
    */
   getResult() {
-    let flag = true,
+    let flag = true,  // 标识当前是否仍处于结果状态的开关
       canvas = this.canvas,
       cb = (e) => {
         // 坐标转换
@@ -162,8 +162,7 @@ class Game {
     }
 
     // 新增障碍物
-    let now = Date.now();
-    if (now - this.lastObstTime > this.obstTimeInterval) {
+    if (Date.now() - this.lastObstTime > this.obstTimeInterval) {
       this.addTwoObstacles();
     }
 
@@ -240,7 +239,7 @@ class Game {
       }
     }
 
-    if (this.bird.ifCrashIntoGround()) {
+    if (!crashed && this.bird.ifCrashIntoGround()) {
       crashed = true;
       console.log('crash into the ground');
     }
@@ -265,7 +264,8 @@ class Game {
       x: this.width,
       y: 0,
       width: 140,
-      height: topObstHeight
+      height: topObstHeight,
+      speedX: 150
     }));
     this.obstacles.push(new Obstacle({
       context: this.context,
@@ -274,7 +274,8 @@ class Game {
       x: this.width,
       y: bottomObstY,
       width: 140,
-      height: bottomObstHeight
+      height: bottomObstHeight,
+      speedX: 150
     }));
   }
 }
