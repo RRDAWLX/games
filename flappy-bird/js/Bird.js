@@ -5,8 +5,8 @@ class Bird {
    * @param {number} width 鸟的宽度
    * @param {number} height 鸟的高度
    * @param {number} v 起始上升速度，单位 px/s。默认值为 0 px/s。
-   * @param {number} flyV 每次点击后上升速度，单位 px/s。默认值为 -10px/s。
-   * @param {number} a 重力加速度，单位 px/s^2。默认值为 0.3px/s^2。
+   * @param {number} flyV 每次点击后上升速度，单位 px/s。默认值为 -700px/s。
+   * @param {number} a 重力加速度，单位 px/s^2。默认值为 1400px/s^2。
    */
   constructor({
     context,
@@ -14,8 +14,8 @@ class Bird {
     width = 85,
     height = 60,
     v = 0,
-    flyV = -10,
-    a = 0.3
+    flyV = -700,
+    a = 1400
   }) {
     this.context = context;
     this.image = image;
@@ -40,6 +40,7 @@ class Bird {
     this.yCeil = canvas.height - 280 - this.height / 2 ; // bird中心点纵坐标上限
     this.sy = 0;  // 在源图片上截取图片起始点的纵坐标
     this.startTime = Date.now();
+    this.updateTime = 0;
   }
 
   /**
@@ -61,8 +62,17 @@ class Bird {
    * @desc 更新鸟的位置
    */
   updatePosition() {
-    this.v += this.a;
-    this.y += this.v;
+    if (!this.updateTime) {
+      this.updateTime = Date.now();
+    }
+
+    let now = Date.now(),
+      t = (now - this.updateTime) / 1000;
+    this.updateTime = now;
+
+    this.y = this.y + this.v * t + 0.5 * this.a * t * t;
+    this.v += this.a * t;
+
     if (this.y < this.yFloor) {
       this.y = this.yFloor;
       this.v = 0;
