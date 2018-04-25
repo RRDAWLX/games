@@ -1,9 +1,5 @@
 let images = [
   {
-    name: 'bg',
-    url: './image/bg.png'
-  },
-  {
     name: 'bird',
     url: './image/bird.png'
   },

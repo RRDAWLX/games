@@ -139,7 +139,6 @@ class Game {
    */
   readyFrame() {
     this.clear();
-    this.drawBackground();
     this.bird.flap().draw();
     this.ground.draw();
     this.context.drawImage(this.images.ready, 10, 15, 470, 135, 125, 300, 470, 135);  // get ready
@@ -151,7 +150,6 @@ class Game {
    */
   playFrame() {
     this.clear();
-    this.drawBackground();
 
     // 清除已经移出左边界的障碍物
     if (this.obstacles.length !== 0) {
@@ -181,7 +179,6 @@ class Game {
    */
   crashFrame() {
     this.clear();
-    this.drawBackground();
     this.obstacles.forEach(obst => {
       obst.draw();
     });
@@ -195,7 +192,6 @@ class Game {
    */
   resultFrame() {
     this.clear();
-    this.drawBackground();
     this.obstacles.forEach(obst => {
       obst.draw();
     });
@@ -211,16 +207,6 @@ class Game {
    */
   clear() {
     this.context.clearRect(0, 0, this.width, this.height);
-  }
-
-  /**
-   * @desc 绘制游戏背景
-   */
-  drawBackground() {
-    let context = this.context;
-    context.save();
-    context.drawImage(this.images.bg, 0, 0, this.width, this.height);
-    context.restore();
   }
 
   /**
