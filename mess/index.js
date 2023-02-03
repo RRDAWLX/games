@@ -50,7 +50,7 @@ function calcDrawingPercentage() {
     }
   }
 
-  const percentage = count * 4 / (width * height)
+  const percentage = count * 4 / data.length * 100
   rateDom.style.cssText = `width: ${percentage}%`
   percentageDom.innerText = percentage.toFixed(4) + ' %'
   return percentage
