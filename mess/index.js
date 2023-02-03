@@ -2,7 +2,7 @@ const canvas = document.getElementById('canvas')
 const width = canvas.width = document.body.clientWidth
 const height = canvas.height = document.body.clientHeight
 const ctx = canvas.getContext('2d')
-const radius = 5 // 圆点半径，单位 px
+const radius = 3 // 圆点半径，单位 px
 
 // 在水平区间 [radius, width - radius] 和垂直区间 [radius, height - radius] 内随机取一个点
 function getRandomPoint() {
@@ -28,9 +28,20 @@ function drawLine(x1, y1, x2, y2) {
 let prePoint = [Math.floor(width / 2), Math.floor(height / 2)]
 drawCircle(...prePoint)
 
-canvas.addEventListener('click', function() {
+function randomDraw() {
   const [x, y] = getRandomPoint()
   drawLine(prePoint[0], prePoint[1], x, y)
   drawCircle(x, y)
   prePoint = [x, y]
+}
+
+let task = null
+
+canvas.addEventListener('click', function() {
+  if (task) {
+    clearInterval(task)
+    task = null
+  } else {
+    task = setInterval(randomDraw, 100)
+  }
 })
